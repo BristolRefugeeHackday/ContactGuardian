@@ -6,16 +6,16 @@
  */
 // if the caller pressed anything but 1 send them back
 $choice = $_REQUEST['Digits'];
-if($choice != '1') {
+if($choice == '1') {
 	header("Location: send-sms.php");
 	//header("Location: save-number.php");
 	die;
 }
-else if($choice != '2') {
+else if($choice == '2') {
 	header("Location: enter-number.php");
 	die;
 }
-else if($choice != '3') {
+else if($choice == '3') {
 	header("Location: without-number.php");
 	die;
 }
