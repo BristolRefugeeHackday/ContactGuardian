@@ -2,8 +2,8 @@
 Enacted when the user calls the service. Aim is for them to record a message to be sent to their saved contacts
 
 Text formatted as a code block represents an insructuon to the user.
-Text formatted as a blockqoute represents a user input. 
 
+Text formatted as a blockqoute represents a user input. 
 
 
 
@@ -15,12 +15,13 @@ Text formatted as a blockqoute represents a user input.
 File: `pin-received.php`
 
 #### If pin is recognised
-Hello <Username>. You have 3 contacts saved.
+`Hello <Username>. You have 3 contacts saved.`
+
+Go to step 2.
 
 #### Else if pin is not recognised
 Sorry, I didn't recognise that number.
-
-
+Repeat step 1
 
 
 ## Step 2
@@ -37,7 +38,6 @@ Go to step 3A
 
 
 
-
 ## Step 3A (Call a contact)
 ```
 To call Nigel, press 1. 
@@ -45,6 +45,7 @@ To call Silvia, press 2
 To call Light, press 3
 To start again, press 0
 ```
+
 ### Response 
 File: TBC 
 
@@ -53,7 +54,6 @@ Retreive the number of the contact and call.
 
 #### If response == 0
 Go to step 1
-
 
 
 
@@ -76,9 +76,8 @@ Go to step 5
 #### If response == 2
 Go to step 4
 
-#### If response == 2
+#### If response == 3
 Go to step 5
-
 
 
 
@@ -88,11 +87,11 @@ Go to step 5
 ### Response 
 File: TBC 
 
-> 07855 369 483
+> 07812345678
 
 #### For any response
 ```
-The number you have is 0 7 8 5 5 3 6 9 4 8 3`
+The number you have is 0 7 8 1 2 3 4 5 6 7 8`
 If this is correct, press 1
 To try again, press 2
 ```
@@ -103,7 +102,6 @@ Go to step 5
 
 #### If response == 2
 Go to step 4
-
 
 
 
@@ -126,13 +124,14 @@ Go to step 6
 
 
 
-
 # Step 6
 ```
 Thank you. Your message and phone number has been sent to Nigel, Silvia, and Light. 
 We will send you an SMS when each of these people have `
 ```
 Go to step 7.
+
+
 
 # Step 7 (Notify contacts)
 Attempt to ring contacts. 
@@ -145,4 +144,4 @@ Save as notified
 Send an SMS to notify that this number has been notified.
 
 #### If do not pick up
-Go to step 7 at next time interval
+Repeat step 7 at next time interval
