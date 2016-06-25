@@ -17,10 +17,7 @@ if ($_REQUEST['Digits'] == 1) {
 	</Response>
 	<?php
 } elseif ($_REQUEST['Digits'] == 2) {
-	?>
-	<Response>
-		<Redirect>./enter-phone-number.php</Redirect>
-	</Response>
-	<?
+
+	header("Location: enter-phone-number.php");
 }
 ?>
