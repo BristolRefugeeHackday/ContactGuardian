@@ -1,3 +1,4 @@
 <resources>
 	<string name="app_name">Contact Guardian</string>
+	<string name="intro_blurb">Welcome! This service will help you get in touch with your important contacts if you are detained or have lost your phone. Calling a single number will let you provide information on your situation and how to contact you. To get started, choose your first contact:</string>
 </resources>
