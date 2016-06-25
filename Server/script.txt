@@ -1,0 +1,58 @@
+Hello. This is Contact Guardian. Please enter your pin.
+> 123456
+
+pin-received.php
+#(Recognised)
+Hello <Username>. You have 3 contacts saved.
+
+#(Not recognised)
+Sorry, I didn't recognise that number
+
+A:
+To call a contact, press 1
+To alert all your contacts press 2
+
+#Answer A1 (call contact)
+B:
+To call Nigel, press 1
+To call Silvia, press 2
+To call Light, press 3
+To start again, press 0
+
+#Answer BX (call person)
+
+#Answer A2 (alert contacts)
+C:
+We can let your contacts know how to call you.
+If you can be called on this number, press 1
+If you want to enter another number, press 2
+To send a message without a number, press 3
+
+#Answer C1 (This number)
+#save the number
+
+#Answer C2 (Enter number)
+Please type your phone number
+> 07855 369 483
+Your number is 0 7 8 5 5 3 6 9 4 8 3
+D:
+If this is correct, press 1
+To try again, press 2
+
+#Answer D1 (Correct number)
+#save the number
+
+
+E:
+To record a message to send to your contacts, press 1
+To send your number without a message, press 2
+
+#Answer E1 (Record Message)
+#Answer C3 (without number)
+Start speaking at the beep. When you are finished press star.
+> Record audio
+
+#Star (Finish recording)
+#Answer E2 (No Message)
+
+Thank you. Your message and phone number has been sent to Nigel, Silvia, and Light
