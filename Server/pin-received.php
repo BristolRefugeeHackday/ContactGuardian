@@ -7,7 +7,7 @@ if ($_REQUEST['Digits'] == 123456) {
 	?>
 
 	<Response>
-		<Say>Hello Peter. You have 3 contacts saved</Say>
+		<Say>Hello Elliot. You have 3 contacts saved</Say>
 		<Gather numDigits="1" action="choose-contact-to-call.php" method="POST">
 			<Say>To call a single contact, press 1. To alert all your contacts press 2.</Say>
 		</Gather>
