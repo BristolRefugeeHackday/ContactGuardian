@@ -20,7 +20,7 @@ File: `pin-received.php`
 Go to step 2.
 
 #### Else if pin is not recognised
-`Sorry, I didn't recognise that number.`
+Sorry, I didn't recognise that number.
 Repeat step 1
 
 
@@ -31,7 +31,7 @@ To alert all your contacts press 2`
 ```
 
 ### Response 
-File: `choose-contact-to-call.php`
+File: TBC 
 
 #### If receive 1 (i.e. call contact)
 Go to step 3A
@@ -58,6 +58,7 @@ Go to step 1
 
 
 ## Step 3B (alert contacts)
+enter-phone-number.php
 
 ```
 We can let your contacts know how to call you.
@@ -67,7 +68,7 @@ To send a message without a number, press 3
 ```
 
 ### Response 
-File: TBC 
+File: enter-phone-number.php
 
 #### If response == 1
 Obtain the number that they are being called on.

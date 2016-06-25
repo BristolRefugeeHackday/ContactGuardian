@@ -1,22 +1,16 @@
 <?php
 
-// if the caller pressed anything but 1 send them back
-if($_REQUEST['Digits'] != '1') {
-	header("Location: hello-monkey.php");
-	die;
-}
-
 // the user pressed 1, connect the call to 310-555-1212
 header("content-type: text/xml");
 echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
 ?>
 <Response>
-	<Say>
-		We can let your contacts know how to call you.
-		If you can be called on this number, press 1
-		If you want to enter another number, press 2
-		To send a message without a number, press 3
-	</Say>
-	<Dial>+13105551212</Dial>
-	<Say>The call failed or the remote party hung up. Goodbye.</Say>
+	<Gather numDigits="1" action="start-phone-number-response.php" method="POST">
+		<Say>
+			We can let your contacts know how to call you.
+			If you can be called on this number, press 1
+			If you want to enter another number, press 2
+			To send a message without a number, press 3
+		</Say>
+	</Gather>
 </Response>
