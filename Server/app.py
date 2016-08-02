@@ -8,8 +8,8 @@ def step_one():
     """Entry point to respond to incoming requests."""
 
     resp = twilio.twiml.Response()
-    with resp.gather(numDigits=6, action="/post_step_one_logic", method="POST"):
-    	resp.say("Hello. This is Contact Guardian. Please enter your pin.")
+    with resp.gather(numDigits=6, action="/post_step_one_logic", method="POST") as gather:
+    	gather.say("Hello. This is Contact Guardian. Please enter your pin.")
 
     return str(resp)
 
