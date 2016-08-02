@@ -19,7 +19,26 @@ A menu system is made using the [Twillo Calling API](https://www.twilio.com/docs
 
 ## Installation
 
-Clone and deploy this repository to a webserver
+Clone this repository and move inside it
+```
+git clone https://github.com/BristolRefugeeHackday/ContactGuardian.git
+cd ContactGuardian
+```
+
+Go to the notifcation directory and set-up a virtual environment
+```
+cd Server
+virtualenv venv
+```
+
+Activate the environment
+`source venv/bin/activate`
+
+Download dependencites
+`pip install -r requirements.txt`
+
+Run the webserver
+
 
 Sign-up with an Twillo account
 
