@@ -33,7 +33,7 @@ source venv/bin/activate
 
 # Download dependencites
 pip install -r requirements.txt
-
+```
 
 
 
@@ -49,7 +49,7 @@ python app.py
 ngrok http 5000
 ```
 
-You will need to sign-up with an Twillo account. Once set-up:
+You will need to sign-up with an Twillo account and create a Twillo app.
 
 ```
 # 1. Create a TwiML app
@@ -61,5 +61,6 @@ Twillo console -> Numbers -> Phone numbers -> Add/edit phone number
 
 Voice 'Configure with': TwiML app
 TwiML app: [YOUR APP NAME FROM STEP 1]
+```
 
 Calls to your Twillo number should now be routed to the application.
