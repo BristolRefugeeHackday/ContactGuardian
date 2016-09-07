@@ -5,14 +5,49 @@ import twilio.twiml
 app = Flask(__name__)
 app.secret_key = 'default-secret-key'
 
-# ADD CLASS WHICH STORES LOGIN ATTEMPT NUMBERS ETC
+
+def process_no_input_response(resp, endpoint, num_retries_allowed=3):
+    """Handle cases where the caller does not respond to a `gather` command.
+       Determines whether to output a 'please try again' message, or redirect 
+       to the hand up process
+    
+    Inputs:
+      resp -- A Twillo resp object
+      endpoint -- the Flask endpoint
+      num_retries_allowed -- Number of allowed tries before redirecting to the hang up process
+
+    Returns:
+      Twillo resp object, with appropriate ('please try again' or redirect) syntax
+    """
+
+    # Add initial caller message
+    resp.say("Sorry, I did not hear a response.")
+    
+    session['num_retries_allowed'] = num_retries_allowed
+
+    # Increment number of attempts
+    if endpoint in session:
+        session[endpoint] += 1
+    else:
+        session[endpoint] = 1
+
+    if session[endpoint] >= num_retries_allowed:
+        # Reached maximum number of retries, so redirect to a message before hanging up
+        resp.redirect(url=url_for('bye'))
+    else:
+        # Allow user to try again
+        resp.say("Please try again.")
+        resp.redirect(url=url_for(endpoint))
+
+    return resp
+
 
 @app.route('/bye', methods=['GET', 'POST'])
 def bye():
-    """Hangup after a number of failed input attemps."""
+    """Hangup after a number of failed input attempts."""
 
     resp = twilio.twiml.Response()
-    resp.say("Sorry, I did not hear your response. Please try calling again.")
+    resp.say("You have reached the maximum number of retries allowed. Please hang up and try calling again.")
     resp.hangup()
 
     return str(resp)
@@ -26,26 +61,7 @@ def step_one():
     with resp.gather(numDigits=6, action="/post_step_one_logic", method="POST") as gather:
     	gather.say("Hello. This is Contact Guardian. Please enter your pin.")
 
-    def process_no_input_response(endpoint, num_retries_allowed=3):
-
-        session['num_retries_allowed'] = num_retries_allowed
-
-        if endpoint in session:
-            session[endpoint] += 1
-        else:
-            session[endpoint] = 1
-
-        if session[endpoint] > num_retries_allowed:
-            # Reached maximum number of retries, so redirect to a message before hanging up
-            raise RequestRedirect(url_for('bye'))
-
-        return resp
-
-    process_no_input_response(request.endpoint)
-    resp.say("Sorry, I did not hear a response. Please try again. Allowed: {}. Tries: {}".format(session['num_retries_allowed'], session['step_one']))
-    resp.redirect(url=url_for('step_one'))
-
-    return str(resp)
+    return str(process_no_input_response(resp, request.endpoint))
 
 
 @app.route('/post_step_one_logic', methods=['GET', 'POST'])
