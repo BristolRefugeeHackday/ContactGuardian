@@ -1,54 +1,42 @@
 from flask import Flask, request, redirect, session, url_for
-from werkzeug.routing import RequestRedirect
 import twilio.twiml
 
 app = Flask(__name__)
 app.secret_key = 'default-secret-key'
 
 
-def process_no_input_response(resp, endpoint, num_retries_allowed=3):
-    """Handle cases where the caller does not respond to a `gather` command.
-       Determines whether to output a 'please try again' message, or redirect 
-       to the hand up process
-    
-    Inputs:
-      resp -- A Twillo resp object
-      endpoint -- the Flask endpoint
-      num_retries_allowed -- Number of allowed tries before redirecting to the hang up process
-
-    Returns:
-      Twillo resp object, with appropriate ('please try again' or redirect) syntax
+@app.route('/timeout', methods=['GET', 'POST'])
+def timeout():
+    """Determines whether to output a 'please try again' message, or if they
+       should be cut off after a number of (i.e. 3) failed input attempts.
+       Should include 'source' as part of the GET payload.
     """
 
+    # Get source of the timeout
+    source = request.args.get('source')
+
     # Add initial caller message
+    resp = twilio.twiml.Response()
     resp.say("Sorry, I did not hear a response.")
-    
-    session['num_retries_allowed'] = num_retries_allowed
 
     # Increment number of attempts
-    if endpoint in session:
-        session[endpoint] += 1
+    if source in session:
+        session[source] += 1
     else:
-        session[endpoint] = 1
+        session[source] = 1
 
-    if session[endpoint] >= num_retries_allowed:
+    # Logic to determine if user should be cut off, or given another chance
+    if session[source] >= 3:
         # Reached maximum number of retries, so redirect to a message before hanging up
-        resp.redirect(url=url_for('bye'))
+        resp.say("""
+            You have reached the maximum number of retries allowed. Please hang up 
+            and try calling again.
+            """)
+        resp.hangup()
     else:
         # Allow user to try again
         resp.say("Please try again.")
-        resp.redirect(url=url_for(endpoint))
-
-    return resp
-
-
-@app.route('/bye', methods=['GET', 'POST'])
-def bye():
-    """Hangup after a number of failed input attempts."""
-
-    resp = twilio.twiml.Response()
-    resp.say("You have reached the maximum number of retries allowed. Please hang up and try calling again.")
-    resp.hangup()
+        resp.redirect(url=url_for(source))
 
     return str(resp)
 
@@ -60,8 +48,9 @@ def step_one():
     resp = twilio.twiml.Response()
     with resp.gather(numDigits=6, action="/post_step_one_logic", method="POST") as gather:
     	gather.say("Hello. This is Contact Guardian. Please enter your pin.")
+    resp.redirect(url=url_for('timeout', source=request.endpoint))
 
-    return str(process_no_input_response(resp, request.endpoint))
+    return str(resp)
 
 
 @app.route('/post_step_one_logic', methods=['GET', 'POST'])
@@ -90,9 +79,7 @@ def step_two():
     resp = twilio.twiml.Response()
     with resp.gather(numDigits=1, action="/post_step_two_logic", method="POST") as gather:
     	gather.say("To alert a single contact, press 1. To alert all your contacts press 2")
-
-    resp.say("Sorry, I did not hear a response. Please try again.")
-    resp.redirect(url=url_for('step_two'))
+    resp.redirect(url=url_for('timeout', source=request.endpoint))
 
     return str(resp)
 
@@ -110,7 +97,6 @@ def post_step_two_logic():
     	resp.redirect(url=url_for('step_four'))
 	
 	return str(resp)
-
 
 
 if __name__ == '__main__':
